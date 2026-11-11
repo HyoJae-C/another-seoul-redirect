@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="origin">
+<meta name="robots" content="noindex">
+<title>Another Seoul is now Modu Seoul</title>
+<link rel="canonical" href="https://moduseoul.com/">
+<noscript><meta http-equiv="refresh" content="0;url=https://moduseoul.com/"></noscript>
+<script>
+// another-seoul.com moved to moduseoul.com. This page lives on the old
+// address, so it can still read the player's data that the game saved in this
+// browser, and hands it to the new address in the #fragment (never sent to a
+// server). The game puts it back on arrival (src/core/domain-move.js).
+(function () {
+  var to = 'https://moduseoul.com' + location.pathname + location.search;
+  try {
+    var keys = {}, k, i;
+    for (i = 0; i < localStorage.length; i++) {
+      k = localStorage.key(i);
+      if (k && (k.indexOf('mk') === 0 || k.indexOf('as.') === 0)) keys[k] = localStorage.getItem(k);
+    }
+    var json = JSON.stringify({ v: 1, keys: keys });
+    // A very big save: send the account only; the cloud save brings the rest.
+    if (json.length > 250000) json = JSON.stringify({ v: 1, keys: { mkauth: keys.mkauth || '', 'mk.lang': keys['mk.lang'] || '' } });
+    if (Object.keys(keys).length) {
+      var b64 = btoa(unescape(encodeURIComponent(json))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+      to += '#move=' + b64;
+    }
+  } catch (e) { /* storage blocked: just go */ }
+  location.replace(to);
+})();
+</script>
+<style>body{font:18px/1.5 system-ui,sans-serif;background:#fff6ea;color:#333;display:grid;place-items:center;min-height:100vh;margin:0;text-align:center;padding:16px}a{color:#e8604c;font-weight:700}</style>
+</head>
+<body>
+<p>Another Seoul is now <b>Modu Seoul</b> · 어나더서울이 모두서울이 됐어요<br><a href="https://moduseoul.com/">moduseoul.com →</a></p>
+</body>
+</html>
